@@ -174,6 +174,11 @@ class GraphAPI(object):
             response = _parse_json(file.read())
         finally:
             file.close()
+
+        if type(response) is bool:
+            return GraphAPIError("InternalError",
+                    "Graph API is returning unexpected values.")
+
         if response.get("error"):
             raise GraphAPIError(response["error"]["type"],
                                 response["error"]["message"])
